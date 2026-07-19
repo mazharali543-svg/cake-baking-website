@@ -763,12 +763,12 @@ export default function AdminSection() {
                 </div>
 
                 <div className="space-y-1.5 pt-2">
-                  <label className="text-xs font-bold text-brand-brown dark:text-zinc-300">Homepage Hero Image URL</label>
+                  <label className="text-xs font-bold text-brand-brown dark:text-zinc-300">Homepage Banner Image URL</label>
                   <input
                     type="text"
                     value={heroImage}
                     onChange={(e) => setHeroImage(e.target.value)}
-                    placeholder="Enter image URL or asset path (e.g., https://unsplash.com/...)"
+                    placeholder="Enter banner image URL or asset path (e.g., https://images.unsplash.com/...)"
                     className="w-full px-4 py-2.5 rounded-xl border border-neutral-200 dark:border-zinc-700 bg-transparent text-sm"
                   />
                   {heroImage && (
