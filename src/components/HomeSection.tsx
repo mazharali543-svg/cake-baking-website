@@ -3,9 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { useState, useEffect } from 'react';
 import { ActivePage, CakeCategory, Testimonial } from '../types';
-import { ShoppingBag, ArrowRight, Award, ShieldCheck, Heart, ThumbsUp, Eye, Star, Sparkles, MessageCircle, HeartHandshake } from 'lucide-react';
-import { motion } from 'motion/react';
+import { ShoppingBag, ArrowRight, Award, ShieldCheck, Heart, ThumbsUp, Eye, Star, Sparkles, MessageCircle, HeartHandshake, Pencil, X, Check } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { useSiteContent } from '../lib/cmsStore';
 
 // Import local generated images (using import/relative path if needed, or string paths that are served statically)
@@ -19,7 +20,14 @@ interface HomeSectionProps {
 }
 
 export default function HomeSection({ setActivePage }: HomeSectionProps) {
-  const { content } = useSiteContent();
+  const { content, updateContent } = useSiteContent();
+  const [isEditingImage, setIsEditingImage] = useState(false);
+  const [imageUrlInput, setImageUrlInput] = useState(content.heroImage || '');
+
+  // Keep imageUrlInput state in sync with content.heroImage updates
+  useEffect(() => {
+    setImageUrlInput(content.heroImage || '');
+  }, [content.heroImage]);
 
   const categories: CakeCategory[] = content.categories || [
     {
@@ -178,7 +186,7 @@ export default function HomeSection({ setActivePage }: HomeSectionProps) {
                 initial={{ opacity: 0, scale: 0.9, rotate: -3 }}
                 animate={{ opacity: 1, scale: 1, rotate: 3 }}
                 transition={{ duration: 0.8, ease: 'easeOut' }}
-                className="w-[280px] h-[380px] sm:w-[340px] sm:h-[460px] rounded-full overflow-hidden border-[12px] border-white dark:border-zinc-800 shadow-2xl z-10 hover:rotate-0 transition-transform duration-500"
+                className="w-[280px] h-[380px] sm:w-[340px] sm:h-[460px] rounded-full overflow-hidden border-[12px] border-white dark:border-zinc-800 shadow-2xl z-10 hover:rotate-0 transition-transform duration-500 relative group"
               >
                 <img
                   src={content.heroImage || HERO_CAKE}
@@ -186,6 +194,16 @@ export default function HomeSection({ setActivePage }: HomeSectionProps) {
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover"
                 />
+                <button
+                  type="button"
+                  onClick={() => setIsEditingImage(true)}
+                  className="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2 text-white cursor-pointer z-20"
+                >
+                  <div className="p-3 bg-white/20 backdrop-blur-xs rounded-full border border-white/40 hover:scale-110 transition-transform">
+                    <Pencil className="w-5 h-5 text-white" />
+                  </div>
+                  <span className="text-xs font-bold uppercase tracking-wider px-4 text-center">Change Celebration Cake Image</span>
+                </button>
               </motion.div>
             </div>
           </div>
@@ -472,6 +490,157 @@ export default function HomeSection({ setActivePage }: HomeSectionProps) {
           </div>
         </motion.div>
       </section>
+
+      {/* 6. Celebration Cake Image Editor Modal */}
+      <AnimatePresence>
+        {isEditingImage && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsEditingImage(false)}
+              className="absolute inset-0 bg-brand-brown-dark/65 backdrop-blur-sm"
+            />
+            
+            {/* Modal Box */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              className="relative w-full max-w-lg bg-white dark:bg-zinc-900 rounded-3xl p-6 sm:p-8 shadow-2xl border border-brand-pink/20 dark:border-zinc-800 z-10 space-y-6 overflow-hidden"
+            >
+              <div className="flex items-center justify-between border-b border-brand-pink/10 dark:border-zinc-800 pb-4">
+                <div className="flex items-center gap-2">
+                  <div className="p-2 bg-brand-pink/20 dark:bg-zinc-800 rounded-xl text-brand-pink-dark dark:text-zinc-300">
+                    <Sparkles className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-serif text-lg font-bold text-brand-brown dark:text-zinc-100">
+                      Edit Celebration Cake Image
+                    </h3>
+                    <p className="text-[11px] text-brand-brown-light dark:text-zinc-400">
+                      Update the primary celebration cake image displayed on the home page.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setIsEditingImage(false)}
+                  className="p-1.5 rounded-full hover:bg-neutral-100 dark:hover:bg-zinc-800 text-neutral-400 hover:text-neutral-600 dark:text-zinc-500 dark:hover:text-zinc-300 transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold uppercase tracking-wider text-brand-brown dark:text-zinc-300">
+                    Image URL or Path
+                  </label>
+                  <input
+                    type="text"
+                    value={imageUrlInput}
+                    onChange={(e) => setImageUrlInput(e.target.value)}
+                    placeholder="Paste an Unsplash, external image URL, or asset path..."
+                    className="w-full px-4 py-3 rounded-xl border border-brand-brown/10 dark:border-zinc-700 bg-transparent text-sm text-brand-brown dark:text-zinc-100 placeholder:text-neutral-400 focus:outline-hidden focus:ring-2 focus:ring-brand-pink/50 dark:focus:ring-zinc-700"
+                  />
+                </div>
+
+                {/* Preset Suggestions */}
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-wider text-brand-brown-light dark:text-zinc-400 block">
+                    Or select a gorgeous preset cake:
+                  </label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      {
+                        name: 'Elegant Red Velvet',
+                        url: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80',
+                      },
+                      {
+                        name: 'Whimsical Rainbow',
+                        url: 'https://images.unsplash.com/photo-1535254973040-607b474cb50d?auto=format&fit=crop&w=600&q=80',
+                      },
+                      {
+                        name: 'Rustic Caramel Drip',
+                        url: 'https://images.unsplash.com/photo-1464349172961-10492ec86537?auto=format&fit=crop&w=600&q=80',
+                      }
+                    ].map((preset, pIdx) => (
+                      <button
+                        key={pIdx}
+                        onClick={() => setImageUrlInput(preset.url)}
+                        className={`group relative h-20 rounded-xl overflow-hidden border-2 transition-all cursor-pointer ${
+                          imageUrlInput === preset.url
+                            ? 'border-brand-pink shadow-md scale-98'
+                            : 'border-transparent hover:border-brand-pink/30'
+                        }`}
+                      >
+                        <img
+                          src={preset.url}
+                          alt={preset.name}
+                          className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                        />
+                        <div className="absolute inset-x-0 bottom-0 bg-black/60 p-1 text-center">
+                          <span className="text-[8px] font-bold text-white block truncate">
+                            {preset.name}
+                          </span>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Preview Card */}
+                <div className="p-4 bg-brand-pink/5 dark:bg-zinc-800/40 rounded-2xl border border-brand-pink/10 dark:border-zinc-800 flex items-center gap-4">
+                  <div className="w-16 h-20 rounded-lg overflow-hidden border border-brand-brown/10 dark:border-zinc-700 bg-neutral-100 shrink-0">
+                    <img
+                      src={imageUrlInput || HERO_CAKE}
+                      alt="Live Preview"
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        e.currentTarget.src = HERO_CAKE;
+                      }}
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <span className="text-[11px] font-bold text-brand-brown dark:text-zinc-300 block">
+                      Live Preview
+                    </span>
+                    <span className="text-[10px] text-brand-brown-light dark:text-zinc-400 break-all truncate block">
+                      {imageUrlInput || 'Showing default cake image'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex items-center justify-end gap-3 pt-2">
+                <button
+                  onClick={() => setIsEditingImage(false)}
+                  className="px-5 py-2.5 rounded-xl border border-neutral-200 dark:border-zinc-700 hover:bg-neutral-50 dark:hover:bg-zinc-800 text-brand-brown-light dark:text-zinc-300 font-semibold text-xs uppercase tracking-wider transition-all cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => {
+                    updateContent({
+                      ...content,
+                      heroImage: imageUrlInput,
+                    });
+                    setIsEditingImage(false);
+                  }}
+                  className="px-5 py-2.5 rounded-xl bg-rose-gold-gradient text-white font-semibold text-xs uppercase tracking-wider hover:opacity-90 shadow-md transition-all flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Check className="w-4 h-4" />
+                  Save Changes
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
