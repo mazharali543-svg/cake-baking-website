@@ -1,0 +1,6 @@
+{
+  "name": "Thecakebake",
+  "description": "Thecakebake - Premium homemade cakes baked with love. Custom cakes for birthdays, weddings, anniversaries, and corporate events with online ordering and digital marketing optimization.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

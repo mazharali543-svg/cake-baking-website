@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100..900;1,100..900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-brand-pink: #F8BBD0;
+  --color-brand-pink-light: #FFEBEE;
+  --color-brand-pink-dark: #F48FB1;
+  --color-brand-cream: #FFF8E7;
+  --color-brand-cream-dark: #F5E6CC;
+  --color-brand-brown: #5D4037;
+  --color-brand-brown-light: #8D6E63;
+  --color-brand-brown-dark: #3E2723;
+  
+  --font-serif: "Playfair Display", "Georgia", serif;
+  --font-sans: "Poppins", "Inter", system-ui, sans-serif;
+  
+  --animate-float: float 4s ease-in-out infinite;
+  --animate-shimmer: shimmer 2s linear infinite;
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+}
+
+/* Base style overrides */
+@layer base {
+  body {
+    @apply font-sans bg-amber-50/20 text-brand-brown dark:bg-zinc-950 dark:text-zinc-100 transition-colors duration-300;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+}
+
+/* Custom CSS utilities */
+@layer utilities {
+  .bg-rose-gold-gradient {
+    background: linear-gradient(135deg, #e5b2ca 0%, #d291bc 100%);
+  }
+  
+  .bg-rose-gold-hover {
+    background: linear-gradient(135deg, #d291bc 0%, #e5b2ca 100%);
+  }
+
+  .text-rose-gold-gradient {
+    background: linear-gradient(135deg, #d291bc 0%, #5D4037 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+  }
+  
+  .dark .glass-card {
+    background: rgba(24, 24, 27, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .glass-nav {
+    background: rgba(255, 248, 231, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(93, 64, 55, 0.08);
+  }
+  
+  .dark .glass-nav {
+    background: rgba(9, 9, 11, 0.9);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-brand-cream/30 dark:bg-zinc-900;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-brand-pink-dark/50 hover:bg-brand-pink-dark rounded-full;
+}
