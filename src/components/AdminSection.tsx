@@ -46,6 +46,7 @@ export default function AdminSection() {
   const [heroHighlight, setHeroHighlight] = useState(content.heroHighlight);
   const [heroSubtitle, setHeroSubtitle] = useState(content.heroSubtitle);
   const [heroCtaText, setHeroCtaText] = useState(content.heroCtaText);
+  const [heroImage, setHeroImage] = useState(content.heroImage || '');
 
   // Story States
   const [aboutTitle, setAboutTitle] = useState(content.aboutTitle);
@@ -146,6 +147,7 @@ export default function AdminSection() {
       heroHighlight,
       heroSubtitle,
       heroCtaText,
+      heroImage,
       aboutTitle,
       aboutSubtitle,
       aboutStoryHeading,
@@ -181,6 +183,7 @@ export default function AdminSection() {
       setHeroHighlight(reset.heroHighlight);
       setHeroSubtitle(reset.heroSubtitle);
       setHeroCtaText(reset.heroCtaText);
+      setHeroImage(reset.heroImage || '');
       setAboutTitle(reset.aboutTitle);
       setAboutSubtitle(reset.aboutSubtitle);
       setAboutStoryHeading(reset.aboutStoryHeading);
@@ -757,6 +760,34 @@ export default function AdminSection() {
                     onChange={(e) => setHeroCtaText(e.target.value)}
                     className="w-full px-4 py-2.5 rounded-xl border border-neutral-200 dark:border-zinc-700 bg-transparent text-sm"
                   />
+                </div>
+
+                <div className="space-y-1.5 pt-2">
+                  <label className="text-xs font-bold text-brand-brown dark:text-zinc-300">Homepage Hero Image URL</label>
+                  <input
+                    type="text"
+                    value={heroImage}
+                    onChange={(e) => setHeroImage(e.target.value)}
+                    placeholder="Enter image URL or asset path (e.g., https://unsplash.com/...)"
+                    className="w-full px-4 py-2.5 rounded-xl border border-neutral-200 dark:border-zinc-700 bg-transparent text-sm"
+                  />
+                  {heroImage && (
+                    <div className="mt-2 flex items-center gap-4 p-3 bg-brand-brown/5 dark:bg-zinc-800/40 rounded-xl border border-brand-brown/10 dark:border-zinc-700/50">
+                      <img
+                        src={heroImage}
+                        alt="Hero preview"
+                        referrerPolicy="no-referrer"
+                        className="w-16 h-20 object-cover rounded-lg border border-brand-brown/20 dark:border-zinc-700"
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).src = 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=150&q=80';
+                        }}
+                      />
+                      <div>
+                        <span className="text-[11px] font-semibold text-brand-brown-light dark:text-zinc-400 block mb-0.5">Image Preview</span>
+                        <span className="text-[10px] text-zinc-400 dark:text-zinc-500 break-all block max-w-xs">{heroImage}</span>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 

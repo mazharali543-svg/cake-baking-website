@@ -44,7 +44,7 @@ export default function HomeSection({ setActivePage }: HomeSectionProps) {
       id: 'custom',
       name: 'Customized Artistry',
       description: 'Bespoke designs shaped exactly according to your theme, mood boards, and favorite flavor combinations.',
-      image: HERO_CAKE, // Fallback to hero
+      image: content.heroImage || HERO_CAKE, // Fallback to hero
     },
   ];
 
@@ -99,7 +99,7 @@ export default function HomeSection({ setActivePage }: HomeSectionProps) {
     },
     {
       id: 4,
-      image: HERO_CAKE,
+      image: content.heroImage || HERO_CAKE,
       likes: 681,
       comments: 57,
       tags: '#celebrationcake #sugarroses #freshlybaked',
@@ -181,7 +181,7 @@ export default function HomeSection({ setActivePage }: HomeSectionProps) {
                 className="w-[280px] h-[380px] sm:w-[340px] sm:h-[460px] rounded-full overflow-hidden border-[12px] border-white dark:border-zinc-800 shadow-2xl z-10 hover:rotate-0 transition-transform duration-500"
               >
                 <img
-                  src={HERO_CAKE}
+                  src={content.heroImage || HERO_CAKE}
                   alt="Premium celebration cake"
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover"

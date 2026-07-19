@@ -102,6 +102,7 @@ export interface SiteContent {
   heroHighlight: string;
   heroSubtitle: string;
   heroCtaText: string;
+  heroImage: string;
   benefitsTitle: string;
   benefitsList: { id: string; title: string; desc: string }[];
   categories: CakeCategory[];

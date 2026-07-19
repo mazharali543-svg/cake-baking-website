@@ -24,6 +24,7 @@ const DEFAULT_CONTENT: SiteContent = {
   heroHighlight: 'Baked from Scratch',
   heroSubtitle: 'Hand-crafted multi-layered custom masterpieces, whipped cream swirls, and premium local ingredients. Elena\'s studio caters to birthdays, weddings, and anniversaries with hospital-grade sanitation protocols.',
   heroCtaText: 'Customize My Dream Cake',
+  heroImage: '/src/assets/images/homepage_hero_cake_1784453038791.jpg',
   benefitsTitle: 'Our Baking Quality Guarantees',
   benefitsList: [
     { id: 'b1', title: '100% From Scratch', desc: 'No pre-mix packages, no artificial gels. Sponges are baked freshly with pure farm dairy and organic vanilla.' },
