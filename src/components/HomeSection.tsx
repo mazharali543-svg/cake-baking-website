@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import { ActivePage, CakeCategory, Testimonial } from '../types';
 import { ShoppingBag, ArrowRight, Award, ShieldCheck, Heart, ThumbsUp, Eye, Star, Sparkles, MessageCircle, HeartHandshake, Pencil, X, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { useSiteContent } from '../lib/cmsStore';
+import { useSiteContent, useAdminAuth } from '../lib/cmsStore';
 
 // Import local generated images (using import/relative path if needed, or string paths that are served statically)
 const HERO_CAKE = '/src/assets/images/homepage_hero_cake_1784453038791.jpg';
@@ -21,6 +21,7 @@ interface HomeSectionProps {
 
 export default function HomeSection({ setActivePage }: HomeSectionProps) {
   const { content, updateContent } = useSiteContent();
+  const { isAdmin } = useAdminAuth();
   const [isEditingImage, setIsEditingImage] = useState(false);
   const [imageUrlInput, setImageUrlInput] = useState(content.heroImage || '');
 
@@ -194,16 +195,18 @@ export default function HomeSection({ setActivePage }: HomeSectionProps) {
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover"
                 />
-                <button
-                  type="button"
-                  onClick={() => setIsEditingImage(true)}
-                  className="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2 text-white cursor-pointer z-20"
-                >
-                  <div className="p-3 bg-white/20 backdrop-blur-xs rounded-full border border-white/40 hover:scale-110 transition-transform">
-                    <Pencil className="w-5 h-5 text-white" />
-                  </div>
-                  <span className="text-xs font-bold uppercase tracking-wider px-4 text-center">Change Celebration Cake Image</span>
-                </button>
+                {isAdmin && (
+                  <button
+                    type="button"
+                    onClick={() => setIsEditingImage(true)}
+                    className="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2 text-white cursor-pointer z-20"
+                  >
+                    <div className="p-3 bg-white/20 backdrop-blur-xs rounded-full border border-white/40 hover:scale-110 transition-transform">
+                      <Pencil className="w-5 h-5 text-white" />
+                    </div>
+                    <span className="text-xs font-bold uppercase tracking-wider px-4 text-center">Change Celebration Cake Image</span>
+                  </button>
+                )}
               </motion.div>
             </div>
           </div>
@@ -493,7 +496,7 @@ export default function HomeSection({ setActivePage }: HomeSectionProps) {
 
       {/* 6. Celebration Cake Image Editor Modal */}
       <AnimatePresence>
-        {isEditingImage && (
+        {isAdmin && isEditingImage && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             {/* Backdrop */}
             <motion.div

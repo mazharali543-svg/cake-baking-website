@@ -500,3 +500,48 @@ export const useContactSubmissions = () => {
   };
 };
 
+// Admin authentication shared state
+type AuthListener = (isAdmin: boolean) => void;
+const authListeners = new Set<AuthListener>();
+
+export const getAdminAuth = (): boolean => {
+  if (typeof window === 'undefined') return false;
+  return localStorage.getItem('thecakebake_admin_authenticated') === 'true';
+};
+
+export const setAdminAuth = (value: boolean) => {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem('thecakebake_admin_authenticated', String(value));
+  authListeners.forEach(listener => listener(value));
+};
+
+export const useAdminAuth = () => {
+  const [isAdmin, setIsAdmin] = useState<boolean>(getAdminAuth);
+
+  useEffect(() => {
+    const handleChange = (newValue: boolean) => {
+      setIsAdmin(newValue);
+    };
+    authListeners.add(handleChange);
+
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === 'thecakebake_admin_authenticated') {
+        setIsAdmin(e.newValue === 'true');
+      }
+    };
+    window.addEventListener('storage', handleStorage);
+
+    return () => {
+      authListeners.delete(handleChange);
+      window.removeEventListener('storage', handleStorage);
+    };
+  }, []);
+
+  return {
+    isAdmin,
+    loginAdmin: () => setAdminAuth(true),
+    logoutAdmin: () => setAdminAuth(false),
+  };
+};
+
+

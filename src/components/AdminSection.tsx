@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from 'react';
-import { useSiteContent, useContactSubmissions } from '../lib/cmsStore';
+import { useSiteContent, useContactSubmissions, useAdminAuth } from '../lib/cmsStore';
 import { SiteContent, CakeCategory, Testimonial, GalleryItem, PricingPlan } from '../types';
 import {
   Lock, Settings, Save, Plus, Trash, Edit, RotateCcw, FileText,
@@ -17,9 +17,9 @@ import { motion, AnimatePresence } from 'motion/react';
 export default function AdminSection() {
   const { content, updateContent, resetToDefault } = useSiteContent();
   const { submissions, updateSubmissionStatus, deleteSubmission, clearAllSubmissions } = useContactSubmissions();
+  const { isAdmin, loginAdmin, logoutAdmin } = useAdminAuth();
 
   // Authentication State
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
   const [authError, setAuthError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -116,7 +116,7 @@ export default function AdminSection() {
   const handleAuthSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (password === 'admin123') {
-      setIsAuthenticated(true);
+      loginAdmin();
       setAuthError('');
     } else {
       setAuthError('Access Denied: Incorrect administrator passphrase.');
@@ -449,7 +449,7 @@ export default function AdminSection() {
   };
 
   // Render Authentication Lock Screen
-  if (!isAuthenticated) {
+  if (!isAdmin) {
     return (
       <div className="min-h-[80vh] flex items-center justify-center p-4">
         <motion.div
@@ -552,6 +552,17 @@ export default function AdminSection() {
 
         {/* Master Control Buttons */}
         <div className="flex flex-wrap items-center gap-3">
+          <button
+            onClick={() => {
+              logoutAdmin();
+              triggerNotification('Admin session locked successfully.');
+            }}
+            className="px-4 py-2.5 rounded-xl border border-red-200 dark:border-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 text-xs font-bold uppercase tracking-wider flex items-center gap-2 cursor-pointer transition-all"
+            title="Securely lock the administrator console and end your editing session"
+          >
+            <Lock className="w-4 h-4" />
+            Lock Console
+          </button>
           <button
             onClick={handleResetDefaults}
             className="px-4 py-2.5 rounded-xl border border-neutral-300 dark:border-zinc-700 text-neutral-500 dark:text-zinc-400 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-xs font-bold uppercase tracking-wider flex items-center gap-2 cursor-pointer transition-all"
