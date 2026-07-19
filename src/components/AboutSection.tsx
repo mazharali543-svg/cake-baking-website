@@ -5,8 +5,11 @@
 
 import { ShieldAlert, Users, Award, ShieldCheck, Heart, Sparkles, CookingPot } from 'lucide-react';
 import { motion } from 'motion/react';
+import { useSiteContent } from '../lib/cmsStore';
 
 export default function AboutSection() {
+  const { content } = useSiteContent();
+
   const values = [
     {
       icon: <Heart className="w-6 h-6 text-brand-pink-dark" />,
@@ -45,10 +48,10 @@ export default function AboutSection() {
       {/* 1. Page Title */}
       <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
         <span className="text-xs uppercase font-bold tracking-widest text-brand-pink-dark font-sans">
-          The Bakery Behind the Magic
+          {content.aboutTitle || 'The Bakery Behind the Magic'}
         </span>
         <h1 className="text-4xl sm:text-5xl font-bold text-brand-brown dark:text-zinc-100">
-          Our Baking Journey & Philosophy
+          {content.aboutSubtitle || 'Our Baking Journey & Philosophy'}
         </h1>
         <div className="w-20 h-1 bg-brand-pink mx-auto rounded-full" />
         <p className="text-brand-brown-light dark:text-zinc-400 text-sm">
@@ -70,16 +73,16 @@ export default function AboutSection() {
             Baking from Scratch Since 2024
           </div>
           <h2 className="text-3xl font-bold font-serif text-brand-brown dark:text-zinc-100">
-            How Thecakebake Was Kneaded Into Life
+            {content.aboutStoryHeading || 'How Thecakebake Was Kneaded Into Life'}
           </h2>
           <p className="text-sm text-brand-brown-light dark:text-zinc-300 leading-relaxed">
-            Our story started in a modest family kitchen with a single hand-mixer and a mother's dream of baking cakes that were both visually spectacular and tasted profoundly moist. Elena Rostova grew frustrated by commercial bakeries that sacrificed rich homemade textures for mass-produced stability.
+            {content.aboutStoryParagraph1 || 'Our story started in a modest family kitchen with a single hand-mixer and a mother\'s dream of baking cakes that were both visually spectacular and tasted profoundly moist. Elena Rostova grew frustrated by commercial bakeries that sacrificed rich homemade textures for mass-produced stability.'}
           </p>
           <p className="text-sm text-brand-brown-light dark:text-zinc-300 leading-relaxed">
-            She began baking for friends, family, and local baby showers. Word of her exquisite buttercream styling, fluffy crumb texture, and strict sanitation standards spread rapidly. In 2024, Elena co-founded **Thecakebake**, converting her workspace into a professional-grade custom bakery laboratory.
+            {content.aboutStoryParagraph2 || 'She began baking for friends, family, and local baby showers. Word of her exquisite buttercream styling, fluffy crumb texture, and strict sanitation standards spread rapidly. In 2024, Elena co-founded Thecakebake, converting her workspace into a professional-grade custom bakery laboratory.'}
           </p>
           <blockquote className="border-l-4 border-brand-pink pl-4 italic text-xs text-brand-brown dark:text-zinc-300 bg-brand-pink/5 py-3 rounded-r-lg">
-            "To us, a cake is not just dessert. It is the glowing centerpiece of some of life's most precious memories. We bake that honor into every layer."
+            "{content.aboutQuote || 'To us, a cake is not just dessert. It is the glowing centerpiece of some of life\'s most precious memories. We bake that honor into every layer.'}"
           </blockquote>
         </motion.div>
 

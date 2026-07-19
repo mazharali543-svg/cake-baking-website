@@ -6,13 +6,16 @@
 import { PricingPlan, ActivePage } from '../types';
 import { Check, Info, Sparkles, Scale, Heart } from 'lucide-react';
 import { motion } from 'motion/react';
+import { useSiteContent } from '../lib/cmsStore';
 
 interface PricingSectionProps {
   setActivePage: (page: ActivePage) => void;
 }
 
 export default function PricingSection({ setActivePage }: PricingSectionProps) {
-  const plans: PricingPlan[] = [
+  const { content } = useSiteContent();
+
+  const defaultPlans: PricingPlan[] = [
     {
       id: '1-pound',
       name: 'Artisan 1-Pound Cake',
@@ -85,6 +88,8 @@ export default function PricingSection({ setActivePage }: PricingSectionProps) {
       ],
     },
   ];
+
+  const plans = content.pricingTiers || defaultPlans;
 
   const handleOrderClick = () => {
     setActivePage('order');

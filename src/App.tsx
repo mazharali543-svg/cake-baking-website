@@ -19,6 +19,8 @@ import PricingSection from './components/PricingSection';
 import OrderSection from './components/OrderSection';
 import ContactSection from './components/ContactSection';
 import FAQSection from './components/FAQSection';
+import BlogSection from './components/BlogSection';
+import AdminSection from './components/AdminSection';
 
 // Framer Motion layout transition triggers
 import { motion, AnimatePresence } from 'motion/react';
@@ -81,15 +83,25 @@ export default function App() {
           title: 'Online Cake Booking Draft',
           description: 'Fill in your flavor profile, size, celebration theme, and upload design sketches. Forward directly to our WhatsApp help desk for rapid confirmation.',
         };
+      case 'contact':
+        return {
+          title: 'Contact Our Bakery Studio',
+          description: 'Locate us on Google Maps, find our WhatsApp hotline, social handles, or send us a digital message regarding corporate collaboration quotes.',
+        };
       case 'faq':
         return {
           title: 'Baking & Booking FAQ Support',
           description: 'Learn about our advance booking timelines, sanitization protocols, secure refund policies, and temperature-controlled AC delivery circles.',
         };
-      case 'contact':
+      case 'blog':
         return {
-          title: 'Contact Our Bakery Studio',
-          description: 'Locate us on Google Maps, find our WhatsApp hotline, social handles, or send us a digital message regarding corporate collaboration quotes.',
+          title: 'Cake Design & Baking Journal',
+          description: 'Explore recipes, wedding cake styling secrets, temperature-controlled delivery diaries, and baking tips from Elena at Thecakebake.',
+        };
+      case 'admin':
+        return {
+          title: 'Live Content Management System',
+          description: 'Manage any text, images, categories, plan pricing, and dynamic FAQ content of Thecakebake website.',
         };
       default:
         return {
@@ -120,6 +132,10 @@ export default function App() {
         return <ContactSection />;
       case 'faq':
         return <FAQSection />;
+      case 'blog':
+        return <BlogSection setActivePage={setActivePage} />;
+      case 'admin':
+        return <AdminSection />;
       default:
         return <HomeSection setActivePage={setActivePage} />;
     }

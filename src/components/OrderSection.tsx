@@ -7,8 +7,10 @@ import React, { useState, useRef } from 'react';
 import { OrderFormState } from '../types';
 import { Upload, CheckCircle2, ShoppingBag, DollarSign, Calendar, MessageSquare, PhoneCall, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useSiteContent } from '../lib/cmsStore';
 
 export default function OrderSection() {
+  const { content } = useSiteContent();
   const [formData, setFormData] = useState<OrderFormState>({
     customerName: '',
     phoneNumber: '',
@@ -124,7 +126,8 @@ export default function OrderSection() {
       `*Instructions:* ${encodeURIComponent(formData.customInstructions || 'None')}%0A%0A` +
       `_Please confirm delivery slot and payment details!_`;
 
-    window.open(`https://wa.me/923053623409?text=${message}`, '_blank');
+    const waNumber = content.whatsapp || '923053623409';
+    window.open(`https://wa.me/${waNumber}?text=${message}`, '_blank');
   };
 
   return (
@@ -270,13 +273,19 @@ export default function OrderSection() {
                       onChange={handleInputChange}
                       className="w-full px-4 py-2.5 rounded-xl border border-brand-brown/15 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm text-brand-brown dark:text-zinc-200 focus:outline-hidden focus:ring-1 focus:ring-brand-pink-dark"
                     >
-                      <option value="Chocolate Fudge Decadence">Chocolate Fudge Decadence</option>
-                      <option value="Red Velvet Silky Cheese">Red Velvet Silky Cheese</option>
-                      <option value="Madagascar Vanilla Cream">Madagascar Vanilla Cream</option>
-                      <option value="Salted Caramel Praline">Salted Caramel Praline</option>
-                      <option value="Fresh Strawberry Buttercream">Fresh Strawberry Buttercream</option>
-                      <option value="Hazelnut Fudge Mirror">Hazelnut Fudge Mirror</option>
-                      <option value="Bespoke Mix (Described below)">Bespoke Mix (Described below)</option>
+                      {(content.flavors && content.flavors.length > 0 ? content.flavors : [
+                        'Chocolate Fudge Decadence',
+                        'Red Velvet Silky Cheese',
+                        'Madagascar Vanilla Cream',
+                        'Salted Caramel Praline',
+                        'Fresh Strawberry Buttercream',
+                        'Hazelnut Fudge Mirror',
+                        'Bespoke Mix (Described below)'
+                      ]).map((flavorName) => (
+                        <option key={flavorName} value={flavorName}>
+                          {flavorName}
+                        </option>
+                      ))}
                     </select>
                   </div>
 

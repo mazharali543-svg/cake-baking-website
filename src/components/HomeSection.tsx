@@ -6,6 +6,7 @@
 import { ActivePage, CakeCategory, Testimonial } from '../types';
 import { ShoppingBag, ArrowRight, Award, ShieldCheck, Heart, ThumbsUp, Eye, Star, Sparkles, MessageCircle, HeartHandshake } from 'lucide-react';
 import { motion } from 'motion/react';
+import { useSiteContent } from '../lib/cmsStore';
 
 // Import local generated images (using import/relative path if needed, or string paths that are served statically)
 const HERO_CAKE = '/src/assets/images/homepage_hero_cake_1784453038791.jpg';
@@ -18,7 +19,9 @@ interface HomeSectionProps {
 }
 
 export default function HomeSection({ setActivePage }: HomeSectionProps) {
-  const categories: CakeCategory[] = [
+  const { content } = useSiteContent();
+
+  const categories: CakeCategory[] = content.categories || [
     {
       id: 'birthday',
       name: 'Birthday Cakes',
@@ -45,7 +48,7 @@ export default function HomeSection({ setActivePage }: HomeSectionProps) {
     },
   ];
 
-  const testimonials: Testimonial[] = [
+  const testimonials: Testimonial[] = content.testimonials || [
     {
       id: '1',
       name: 'Sophia Carter',
@@ -126,7 +129,7 @@ export default function HomeSection({ setActivePage }: HomeSectionProps) {
                 transition={{ duration: 0.6, delay: 0.15 }}
                 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-brand-brown dark:text-zinc-100 tracking-tight leading-[1.1]"
               >
-                Freshly Baked Cakes for <span className="text-brand-pink-dark dark:text-brand-pink italic">Every</span> Celebration
+                {content.heroTitle || 'Freshly Baked Cakes for'} <span className="text-brand-pink-dark dark:text-brand-pink italic">{content.heroHighlight || 'Every'}</span> Celebration
               </motion.h1>
 
               <motion.p
@@ -135,7 +138,7 @@ export default function HomeSection({ setActivePage }: HomeSectionProps) {
                 transition={{ duration: 0.6, delay: 0.3 }}
                 className="text-lg text-[#5D4037]/80 dark:text-zinc-300 leading-relaxed max-w-lg font-sans"
               >
-                Custom-made cakes prepared with premium organic ingredients and delivered fresh to your doorstep. Boutique designs for your most cherished moments.
+                {content.heroSubtitle || 'Custom-made cakes prepared with premium organic ingredients and delivered fresh to your doorstep. Boutique designs for your most cherished moments.'}
               </motion.p>
 
               <motion.div
@@ -150,7 +153,7 @@ export default function HomeSection({ setActivePage }: HomeSectionProps) {
                   className="px-8 py-4 rounded-full bg-rose-gold-gradient hover:bg-rose-gold-hover text-white font-bold text-xs uppercase tracking-widest shadow-lg hover:scale-103 transition-all cursor-pointer flex items-center gap-2 border border-white/20"
                 >
                   <ShoppingBag className="w-4 h-4" />
-                  Order Now
+                  {content.heroCtaText || 'Order Now'}
                 </button>
                 <button
                   id="hero-gallery-cta"

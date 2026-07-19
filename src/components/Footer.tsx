@@ -7,12 +7,14 @@ import React, { useState } from 'react';
 import { ActivePage } from '../types';
 import { Phone, Mail, MapPin, Instagram, Facebook, Send, CheckCircle2 } from 'lucide-react';
 import CakeLogo from './CakeLogo';
+import { useSiteContent } from '../lib/cmsStore';
 
 interface FooterProps {
   setActivePage: (page: ActivePage) => void;
 }
 
 export default function Footer({ setActivePage }: FooterProps) {
+  const { content } = useSiteContent();
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
   const [error, setError] = useState('');
@@ -56,7 +58,7 @@ export default function Footer({ setActivePage }: FooterProps) {
             {/* Social Icons */}
             <div className="flex items-center gap-3 pt-2">
               <a
-                href="https://instagram.com/thecakebake"
+                href={content.instagramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-white dark:bg-zinc-800 border border-brand-brown/10 dark:border-zinc-700 flex items-center justify-center text-brand-brown dark:text-zinc-300 hover:bg-brand-pink hover:text-brand-brown-dark hover:border-brand-pink transition-all duration-350"
@@ -65,7 +67,7 @@ export default function Footer({ setActivePage }: FooterProps) {
                 <Instagram className="w-4.5 h-4.5" />
               </a>
               <a
-                href="https://facebook.com/thecakebake"
+                href={content.facebookUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-white dark:bg-zinc-800 border border-brand-brown/10 dark:border-zinc-700 flex items-center justify-center text-brand-brown dark:text-zinc-300 hover:bg-brand-pink hover:text-brand-brown-dark hover:border-brand-pink transition-all duration-350"
@@ -74,7 +76,7 @@ export default function Footer({ setActivePage }: FooterProps) {
                 <Facebook className="w-4.5 h-4.5" />
               </a>
               <a
-                href="https://wa.me/923053623409"
+                href={`https://wa.me/${content.whatsapp}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-3.5 py-2.5 rounded-full bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-500/10 flex items-center gap-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500 hover:text-white transition-all"
@@ -102,8 +104,10 @@ export default function Footer({ setActivePage }: FooterProps) {
                 { label: 'Our Services', page: 'services' as ActivePage },
                 { label: 'Pricing Estimations', page: 'pricing' as ActivePage },
                 { label: 'Order Online', page: 'order' as ActivePage },
+                { label: 'Baking Journal', page: 'blog' as ActivePage },
                 { label: 'Frequently Asked Questions', page: 'faq' as ActivePage },
                 { label: 'Contact Us', page: 'contact' as ActivePage },
+                { label: 'Admin Portal', page: 'admin' as ActivePage },
               ].map((link) => (
                 <li key={link.page}>
                   <button
@@ -150,10 +154,6 @@ export default function Footer({ setActivePage }: FooterProps) {
               Contact & Updates
             </h3>
             <div className="space-y-2.5 text-sm text-brand-brown-light dark:text-zinc-400">
-              <div className="flex items-center gap-2.5">
-                <Phone className="w-4 h-4 text-brand-pink-dark" />
-                <span>+92 305 3623409</span>
-              </div>
               <div className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-brand-pink-dark" />
                 <span>thecakebake33@gmail.com</span>

@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import { GalleryItem } from '../types';
 import { X, ZoomIn, ChevronLeft, ChevronRight, Share2, Heart } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useSiteContent } from '../lib/cmsStore';
 
 // Locally generated premium images
 const HERO_CAKE = '/src/assets/images/homepage_hero_cake_1784453038791.jpg';
@@ -15,6 +16,7 @@ const WEDDING_CAKE = '/src/assets/images/wedding_cake_1784453075817.jpg';
 const CUPCAKES = '/src/assets/images/cupcake_collection_1784453094801.jpg';
 
 export default function GallerySection() {
+  const { content } = useSiteContent();
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [favorites, setFavorites] = useState<Record<string, boolean>>({});
@@ -30,7 +32,7 @@ export default function GallerySection() {
     'Floral Cakes'
   ];
 
-  const galleryItems: GalleryItem[] = [
+  const galleryItems: GalleryItem[] = content.galleryItems || [
     {
       id: 'b1',
       title: 'Blush Velvet Birthday Cake',

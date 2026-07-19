@@ -7,8 +7,10 @@ import React, { useState } from 'react';
 import { ContactFormState } from '../types';
 import { Phone, Mail, MapPin, CheckCircle2, Instagram, Facebook, Send, ShieldAlert } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { addContactSubmission, useSiteContent } from '../lib/cmsStore';
 
 export default function ContactSection() {
+  const { content } = useSiteContent();
   const [formData, setFormData] = useState<ContactFormState>({
     name: '',
     email: '',
@@ -31,6 +33,15 @@ export default function ContactSection() {
       return;
     }
     setError('');
+    
+    // Save to the reactive admin inquiries list
+    addContactSubmission({
+      name: formData.name,
+      email: formData.email,
+      subject: formData.subject,
+      message: formData.message,
+    });
+
     setIsSent(true);
     setFormData({ name: '', email: '', subject: 'General Inquiry', message: '' });
     setTimeout(() => {
@@ -62,14 +73,14 @@ export default function ContactSection() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="glass-card p-6 rounded-2xl flex items-start gap-4">
               <div className="p-3 rounded-xl bg-brand-pink/20 text-brand-brown dark:text-brand-pink">
-                <Phone className="w-5 h-5" />
+                <Send className="w-5 h-5" />
               </div>
               <div>
                 <h4 className="font-serif text-sm font-bold text-brand-brown dark:text-zinc-100 mb-1">
-                  Call or Text Us
+                  WhatsApp Support
                 </h4>
                 <p className="text-xs text-brand-brown-light dark:text-zinc-400">
-                  +92 305 3623409
+                  Direct message helpline
                 </p>
                 <p className="text-[10px] text-brand-pink-dark font-medium mt-1">
                   Mon-Sat: 9am - 8pm
@@ -102,7 +113,7 @@ export default function ContactSection() {
             </h4>
             <div className="flex flex-wrap items-center gap-3">
               <a
-                href="https://instagram.com/thecakebake"
+                href={content.instagramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-4 py-2.5 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold text-xs flex items-center gap-1.5 shadow-md"
@@ -111,7 +122,7 @@ export default function ContactSection() {
                 Instagram
               </a>
               <a
-                href="https://facebook.com/thecakebake"
+                href={content.facebookUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-4 py-2.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs flex items-center gap-1.5 shadow-md"
@@ -120,7 +131,7 @@ export default function ContactSection() {
                 Facebook
               </a>
               <a
-                href="https://wa.me/923053623409"
+                href={`https://wa.me/${content.whatsapp}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-4 py-2.5 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold text-xs flex items-center gap-1.5 shadow-md"

@@ -4,6 +4,7 @@
  */
 
 import { useEffect } from 'react';
+import { useSiteContent } from '../lib/cmsStore';
 
 interface SEOHeadProps {
   title: string;
@@ -18,6 +19,8 @@ export default function SEOHead({
   keywords = ['homemade cakes', 'custom cakes', 'birthday cake near me', 'wedding cake delivery', 'cupcakes', 'Thecakebake'],
   pageUrl = 'https://thecakebake.com',
 }: SEOHeadProps) {
+  const { content } = useSiteContent();
+
   useEffect(() => {
     // 1. Update Document Title
     document.title = `${title} | Thecakebake - Freshly Baked with Love`;
@@ -55,7 +58,6 @@ export default function SEOHead({
       'image': 'https://thecakebake.com/assets/hero-cake.jpg',
       '@id': 'https://thecakebake.com/#bakery',
       'url': 'https://thecakebake.com',
-      'telephone': '+923053623409',
       'priceRange': '$$',
       'openingHoursSpecification': [
         {
@@ -72,8 +74,8 @@ export default function SEOHead({
         }
       ],
       'sameAs': [
-        'https://facebook.com/thecakebake',
-        'https://instagram.com/thecakebake',
+        content.facebookUrl,
+        content.instagramUrl,
       ],
     };
 
@@ -81,7 +83,7 @@ export default function SEOHead({
 
     // Clean up or log analytics tags initialized
     console.log('SEO metadata and Schema.org markup updated for page:', title);
-  }, [title, description, keywords, pageUrl]);
+  }, [title, description, keywords, pageUrl, content.facebookUrl, content.instagramUrl]);
 
   return null;
 }

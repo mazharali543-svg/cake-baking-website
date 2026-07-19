@@ -6,59 +6,81 @@
 import { ServiceItem } from '../types';
 import { PencilRuler, Cake, Wine, Landmark, CupSoda, Table, Truck, Check, HelpCircle } from 'lucide-react';
 import { motion } from 'motion/react';
+import { useSiteContent } from '../lib/cmsStore';
 
 export default function ServicesSection() {
-  const services = [
+  const { content } = useSiteContent();
+
+  const getServiceIcon = (id: string) => {
+    switch (id) {
+      case 'custom-design':
+        return <PencilRuler className="w-6 h-6 text-brand-pink-dark" />;
+      case 'birthday':
+        return <Cake className="w-6 h-6 text-brand-pink-dark" />;
+      case 'wedding':
+        return <Wine className="w-6 h-6 text-brand-pink-dark" />;
+      case 'corporate':
+        return <Landmark className="w-6 h-6 text-brand-pink-dark" />;
+      case 'cupcakes':
+        return <CupSoda className="w-6 h-6 text-brand-pink-dark" />;
+      case 'dessert-tables':
+        return <Table className="w-6 h-6 text-brand-pink-dark" />;
+      case 'delivery':
+        return <Truck className="w-6 h-6 text-brand-pink-dark" />;
+      default:
+        return <Cake className="w-6 h-6 text-brand-pink-dark" />;
+    }
+  };
+
+  const defaultServices = [
     {
       id: 'custom-design',
       title: 'Bespoke Custom Cake Design',
       description: 'Consult with our head chef to translate color palettes, wedding themes, mood boards, or character blueprints into majestic edible sculptures.',
-      icon: <PencilRuler className="w-6 h-6 text-brand-pink-dark" />,
       features: ['Personalized consultation', 'Digital sketch mockups', 'Custom edible toppers']
     },
     {
       id: 'birthday',
       title: 'Vibrant Birthday Cakes',
       description: 'Make birthdays unforgettable with customizable toppers, double-choc fudge layers, or whimsical children themes (unicorns, heroes, castles).',
-      icon: <Cake className="w-6 h-6 text-brand-pink-dark" />,
       features: ['Eggless options available', 'Age candles included', 'Personalized message plaques']
     },
     {
       id: 'wedding',
       title: 'Elite Wedding Masterpieces',
       description: 'Hand-sculpted sugar flowers, luxurious metallic leaf ribbons, and multiple cream layers engineered to withstand grand receptions with beauty.',
-      icon: <Wine className="w-6 h-6 text-brand-pink-dark" />,
       features: ['Complimentary cake tastings', 'On-site venue assembly', 'Structural engineering check']
     },
     {
       id: 'corporate',
       title: 'Corporate Celebration Cakes',
       description: 'Sophisticated custom logos printed using high-resolution edible ink. Clean geometry, elegant colors, and prompt corporate receipt invoicing.',
-      icon: <Landmark className="w-6 h-6 text-brand-pink-dark" />,
       features: ['High-res edible logo printing', 'Bulk cupcake packs', 'Official invoice setup']
     },
     {
       id: 'cupcakes',
       title: 'Artisan Cupcake Packs',
       description: 'Gourmet cupcake sets with whipped pastel dual-swirl buttercream, customized wrappers, and chocolate fillings, ideal for corporate gift boxes.',
-      icon: <CupSoda className="w-6 h-6 text-brand-pink-dark" />,
       features: ['Piping style selection', 'Gourmet berry inserts', 'Customized gift packaging']
     },
     {
       id: 'dessert-tables',
       title: 'Comprehensive Dessert Tables',
       description: 'We design full banquet displays featuring premium mini-donuts, custom cake pops, personalized sugar cookies, and French macarons.',
-      icon: <Table className="w-6 h-6 text-brand-pink-dark" />,
       features: ['Complete table layout styling', 'Tiered stands & props rental', 'Menu labeling cards']
     },
     {
       id: 'delivery',
       title: 'Temperature-Controlled Delivery',
       description: 'We do not use standard bicycle delivery. All cakes are transported in specialized shock-absorbent coolers inside AC vans to guarantee freshness.',
-      icon: <Truck className="w-6 h-6 text-brand-pink-dark" />,
       features: ['AC van transportation', 'Delivery time lock guarantees', 'Unboxing assistance']
     }
   ];
+
+  const services = (content.services || defaultServices).map(serv => ({
+    ...serv,
+    icon: getServiceIcon(serv.id)
+  }));
 
   return (
     <div id="services-section" className="pb-16 pt-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -35,8 +35,10 @@ export default function Header({ activePage, setActivePage, darkMode, setDarkMod
     { label: 'Services', page: 'services' },
     { label: 'Pricing', page: 'pricing' },
     { label: 'Order Online', page: 'order' },
+    { label: 'Blog', page: 'blog' },
     { label: 'FAQ', page: 'faq' },
     { label: 'Contact', page: 'contact' },
+    { label: 'Admin', page: 'admin' },
   ];
 
   const handleNavClick = (page: ActivePage) => {

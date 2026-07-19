@@ -7,11 +7,13 @@ import { useState } from 'react';
 import { FAQItem } from '../types';
 import { ChevronDown, ChevronUp, HelpCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useSiteContent } from '../lib/cmsStore';
 
 export default function FAQSection() {
+  const { content } = useSiteContent();
   const [openId, setOpenId] = useState<string | null>('faq-1');
 
-  const faqs: FAQItem[] = [
+  const defaultFaqs: FAQItem[] = [
     {
       id: 'faq-1',
       question: 'How do I place an order on Thecakebake?',
@@ -43,6 +45,8 @@ export default function FAQSection() {
       answer: 'Since custom orders require baking custom sponges and purchasing tailored fresh items (e.g. berries, organic flowers), cancellations made up to 48 hours before the delivery date qualify for a 100% refund (or studio credit). Cancellations within 48 hours will retain the 50% deposit to cover preparation costs.'
     }
   ];
+
+  const faqs = content.faqs || defaultFaqs;
 
   const toggleFaq = (id: string) => {
     setOpenId(prev => (prev === id ? null : id));
